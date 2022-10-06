@@ -1,5 +1,7 @@
 using System;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using UnityStandardAssets.CrossPlatformInput;
 using UnityStandardAssets.Utility;
 using Random = UnityEngine.Random;
@@ -8,6 +10,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
 {
     [RequireComponent(typeof (CharacterController))]
     [RequireComponent(typeof (AudioSource))]
+
     public class FirstPersonController : MonoBehaviour
     {
         [SerializeField] private bool m_IsWalking;
@@ -42,6 +45,10 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private bool m_Jumping;
         private AudioSource m_AudioSource;
 
+        private int coinCount;
+        public GameObject coincollected;
+
+       
         // Use this for initialization
         private void Start()
         {
@@ -254,6 +261,23 @@ namespace UnityStandardAssets.Characters.FirstPerson
                 return;
             }
             body.AddForceAtPosition(m_CharacterController.velocity*0.1f, hit.point, ForceMode.Impulse);
+        }
+        private void OnTriggerEnter(Collider other)
+        {
+            if(other.gameObject.tag == "Coin")
+            {
+                coinCount+=10;
+                coincollected.GetComponent<Text>().text = "Coin: " + coinCount;
+                Destroy(other.gameObject);
+            }
+            if(coinCount == 60)
+            {
+                SceneManager.LoadScene(1);
+            }
+            if(other.gameObject.tag == "Water")
+            {
+                SceneManager.LoadScene(2);
+            }
         }
     }
 }
