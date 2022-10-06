@@ -47,6 +47,9 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
         private int coinCount;
         public GameObject coincollected;
+        public GameObject timer;
+        public bool isrunning = false;
+        public float timeremaining;
 
        
         // Use this for initialization
@@ -62,6 +65,8 @@ namespace UnityStandardAssets.Characters.FirstPerson
             m_Jumping = false;
             m_AudioSource = GetComponent<AudioSource>();
 			m_MouseLook.Init(transform , m_Camera.transform);
+
+            isrunning = true;
         }
 
 
@@ -88,6 +93,21 @@ namespace UnityStandardAssets.Characters.FirstPerson
             }
 
             m_PreviouslyGrounded = m_CharacterController.isGrounded;
+
+            if(isrunning)
+            {
+                if(timeremaining > 0)
+                {
+                    timeremaining -= Time.deltaTime;
+                    timer.GetComponent<Text>().text = "Time: " + timeremaining;
+                }
+                else
+                {
+                    timeremaining = 0;
+                    isrunning = false;
+                    timer.GetComponent<Text>().text = "Time: 0";
+                }
+            }
         }
 
 
