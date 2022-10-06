@@ -50,6 +50,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
         public GameObject timer;
         public bool isrunning = false;
         public float timeremaining;
+        public GameObject particle;
 
        
         // Use this for initialization
@@ -286,7 +287,8 @@ namespace UnityStandardAssets.Characters.FirstPerson
         {
             if(other.gameObject.tag == "Coin")
             {
-                coinCount+=10;
+                Instantiate(particle, transform.position, Quaternion.identity);
+                coinCount +=10;
                 coincollected.GetComponent<Text>().text = "Coin: " + coinCount;
                 Destroy(other.gameObject);
             }
